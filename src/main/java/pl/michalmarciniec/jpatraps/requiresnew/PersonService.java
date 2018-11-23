@@ -21,7 +21,7 @@ public class PersonService {
         Person person = new Person(name);
         personRepository.save(person);
 
-        walletService.createWalletAndAttachToPerson(person);
+        walletService.createWalletAndAttachToPerson(person.getId());
 
         return person.getId();
     }

@@ -24,13 +24,12 @@ public class WalletServiceTest {
     private WalletService walletService;
 
     @Test
-    @Transactional
     public void shouldCreateAndAddEmptyWalletToPerson() {
         // given
         Person margaret = personRepository.save(new Person("Margaret"));
 
         // when
-        long walletId = walletService.createWalletAndAttachToPerson(margaret).getId();
+        long walletId = walletService.createWalletAndAttachToPerson(margaret.getId()).getId();
 
         // then
         Optional<Wallet> dbWallet = walletRepository.findById(walletId);
