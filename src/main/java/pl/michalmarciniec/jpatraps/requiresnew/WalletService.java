@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 public class WalletService {
 
@@ -16,8 +18,8 @@ public class WalletService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Wallet createWallet() {
-        Wallet emptyWallet = new Wallet();
+    public Wallet createWallet(BigDecimal money) {
+        Wallet emptyWallet = new Wallet(money);
         return walletRepository.save(emptyWallet);
     }
 

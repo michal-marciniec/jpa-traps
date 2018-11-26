@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -20,6 +21,8 @@ public class PersonServiceTest {
     private PersonService personService;
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private WalletRepository walletRepository;
 
     @Test
     public void shouldCreatePersonWithInitialAmountOfMoney() {
@@ -33,6 +36,17 @@ public class PersonServiceTest {
         assertThat(jeremyWallet).isNotNull();
         assertThat(jeremyWallet.getId()).isNotNull();
         assertThat(jeremyWallet.getAmount()).isCloseTo(BigDecimal.TEN, Percentage.withPercentage(0.1D));
+    }
+
+    @Test
+    public void shouldNotCreateAnythingWhenTryingToCreatePersonWithNegativeAmountOfMoney() {
+        // when
+        assertThatThrownBy(() -> personService.createPerson("Vince", BigDecimal.valueOf(-100.0D)))
+                .isInstanceOf(RuntimeException.class);
+
+        // then
+        assertThat(personRepository.findAll()).isEmpty();
+        assertThat(walletRepository.findAll()).isEmpty();
     }
 
 }
