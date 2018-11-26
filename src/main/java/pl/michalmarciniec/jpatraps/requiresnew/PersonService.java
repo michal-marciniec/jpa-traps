@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 public class PersonService {
 
@@ -17,11 +19,14 @@ public class PersonService {
     }
 
     @Transactional
-    public long createPerson(String name) {
+    public long createPerson(String name, BigDecimal money) {
         Person person = new Person(name);
         personRepository.save(person);
 
-        walletService.createWalletAndAttachToPerson(person.getId());
+        Wallet wallet = walletService.createWallet();
+
+        wallet.setAmount(money);
+        person.setWallet(wallet);
 
         return person.getId();
     }

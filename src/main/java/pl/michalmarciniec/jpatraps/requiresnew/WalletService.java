@@ -9,23 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class WalletService {
 
     private final WalletRepository walletRepository;
-    private final PersonRepository personRepository;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository, PersonRepository personRepository) {
+    public WalletService(WalletRepository walletRepository) {
         this.walletRepository = walletRepository;
-        this.personRepository = personRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Wallet createWalletAndAttachToPerson(long personId) {
+    public Wallet createWallet() {
         Wallet emptyWallet = new Wallet();
-        walletRepository.save(emptyWallet);
-
-        Person person = personRepository.findById(personId).orElseThrow();
-        person.setWallet(emptyWallet);
-
-        return emptyWallet;
+        return walletRepository.save(emptyWallet);
     }
 
 }

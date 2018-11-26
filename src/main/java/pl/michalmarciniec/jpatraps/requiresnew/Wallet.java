@@ -25,4 +25,9 @@ public class Wallet {
     public BigDecimal getAmount() {
         return amount;
     }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
 }

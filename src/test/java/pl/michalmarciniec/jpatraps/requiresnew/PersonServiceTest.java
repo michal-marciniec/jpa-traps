@@ -1,11 +1,13 @@
 package pl.michalmarciniec.jpatraps.requiresnew;
 
+import org.assertj.core.data.Percentage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,16 +22,17 @@ public class PersonServiceTest {
     private PersonRepository personRepository;
 
     @Test
-    public void shouldCreatePersonWithEmptyWallet() {
+    public void shouldCreatePersonWithInitialAmountOfMoney() {
         // when
-        long jeremyId = personService.createPerson("Jeremy");
+        long jeremyId = personService.createPerson("Jeremy", BigDecimal.TEN);
 
         // then
         Optional<Person> jeremy = personRepository.findById(jeremyId);
         assertThat(jeremy).isPresent();
         Wallet jeremyWallet = jeremy.get().getWallet();
+        assertThat(jeremyWallet).isNotNull();
         assertThat(jeremyWallet.getId()).isNotNull();
-        assertThat(jeremyWallet.getAmount()).isZero();
+        assertThat(jeremyWallet.getAmount()).isCloseTo(BigDecimal.TEN, Percentage.withPercentage(0.1D));
     }
 
 }
