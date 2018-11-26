@@ -1,6 +1,7 @@
 package pl.michalmarciniec.jpatraps.requiresnew;
 
 import org.assertj.core.data.Percentage;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class PersonServiceTest {
     private PersonRepository personRepository;
     @Autowired
     private WalletRepository walletRepository;
+
+    @Before
+    public void setUp() {
+        personRepository.deleteAll();
+        walletRepository.deleteAll();
+    }
 
     @Test
     public void shouldCreatePersonWithInitialAmountOfMoney() {
